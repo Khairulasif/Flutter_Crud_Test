@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../viewmodel/todo_viewmodel.dart';
 
 class TodoCreate extends StatefulWidget {
   const TodoCreate({super.key});
@@ -11,6 +14,7 @@ class _TodoCreateState extends State<TodoCreate> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final todocontroller = Provider.of<TodoViewModel>(context);
     return Scaffold(
       backgroundColor: Colors.red,
       appBar: AppBar(
@@ -33,6 +37,7 @@ class _TodoCreateState extends State<TodoCreate> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextFormField(
+                    controller: todocontroller.titleController,
                     validator: (value) {
                       if(value == null || value.isEmpty) {
                         return 'Required Field';
@@ -58,6 +63,7 @@ class _TodoCreateState extends State<TodoCreate> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextFormField(
+                    controller: todocontroller.descriptionController,
                     minLines: 3,
                     maxLines: 3,
                     validator: (value) {
@@ -77,17 +83,24 @@ class _TodoCreateState extends State<TodoCreate> {
                 const SizedBox(
                   height: 25,
                 ),
-                Container(
-                  width: 400,
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: Center(
-                    child: const Text(
-                      "Save",
-                      style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                GestureDetector(
+                  onTap: () {
+                    if(formKey.currentState!.validate()) {
+                      todocontroller.createTodo();
+                    }
+                  },
+                  child: Container(
+                    width: 400,
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: Center(
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),

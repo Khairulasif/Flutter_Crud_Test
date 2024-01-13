@@ -11,6 +11,7 @@ class TodoList extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.red,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Todo List"),
       ),
       floatingActionButton: FloatingActionButton(
@@ -23,14 +24,15 @@ class TodoList extends StatelessWidget {
       body: Column(
         children: [
           ListView.builder(
-            itemCount: 3, shrinkWrap: true,
+            itemCount: todocontroller.allTodos.length,
+              shrinkWrap: true,
               itemBuilder: (BuildContext context, i){
             return Padding(
                 padding: const EdgeInsets.all(8.0),
               child: ListTile(
                 tileColor: Colors.white,
-                title: const Text("Title"),
-                subtitle: const Text("Subtitle"),
+                title: Text(todocontroller.allTodos[i].todoTitle.toString()),
+                subtitle: Text(todocontroller.allTodos[i].todoDescription.toString()),
                 trailing: PopupMenuButton(
                     child: const Icon(Icons.more_vert),
                     itemBuilder: (BuildContext context) =>
@@ -44,9 +46,11 @@ class TodoList extends StatelessWidget {
                       ],
                   onSelected: (String value) {
                       if(value == "edit") {
-                        todocontroller.navigateToEdit();
+                        todocontroller.navigateToEdit(todocontroller.allTodos[i]);
                       }
-                      if(value == "delete") {}
+                      if(value == "delete") {
+                        todocontroller.deleteTodo(todocontroller.allTodos[i].sId.toString(), i);
+                      }
                   },
                 ),
               ),
